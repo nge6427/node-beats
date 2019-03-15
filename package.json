@@ -1,0 +1,24 @@
+{
+  "name": "node-beats",
+  "version": "0.1.0",
+  "description": "Analyze FFT data to detect beats and other instuments.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nge6427/node-beats.git"
+  },
+  "keywords": [
+    "fft",
+    "beat",
+    "detection"
+  ],
+  "author": "nge6427",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nge6427/node-beats/issues"
+  },
+  "homepage": "https://github.com/nge6427/node-beats#readme"
+}
