@@ -1,7 +1,7 @@
-class SimpleBassDetector {
+class BassPeakDetector {
     constructor(options) {
         this.lowPassFrequency = 200;
-        this.thresholdMaxLevel = 230;
+        this.thresholdMaxLevel = 255;
         this.minimumLevel = 120;
         this.decayRatePerSecond = 15;
         this.beatTimeoutMs = 250;
@@ -14,25 +14,25 @@ class SimpleBassDetector {
     detect(beatObj) {
         let sample = beatObj.lastFrequencySample;
 
-        let sampleAvg = beatObj.getAverage(beatObj.lowPass(this.lowPassFrequency, sample.data));
-        if (sampleAvg >= this.thresholdLevel) {
-            this.thresholdLevel = sampleAvg < this.thresholdMaxLevel ? sampleAvg : this.thresholdMaxLevel;
+        let peak = beatObj.lowPass(this.lowPassFrequency, sample.data).reduce((a, b) => a > b ? a : b);
+        if (peak >= this.thresholdLevel) {
+            this.thresholdLevel = peak < this.thresholdMaxLevel ? peak : this.thresholdMaxLevel;
             if (sample.timestamp - this.lastBeat >= this.beatTimeoutMs) {
                 this.lastBeat = sample.timestamp;
-                sample.SimpleBassDetector = {
+                sample.BassPeakDetector = {
                     detected: true,
-                    level: sampleAvg
+                    level: peak
                 };
-                beatObj.emit("SimpleBassDetector", sample);
+                beatObj.emit("BassPeakDetector", sample);
             }
         } else {
             if (this.thresholdLevel > this.minimumLevel)
                 this.thresholdLevel -= beatObj.sampleTime * this.decayRatePerSecond;
-            sample.SimpleBassDetector = {
+            sample.BassPeakDetector = {
                 detected: false
             };
         }
     }
 }
 
-module.exports = SimpleBassDetector;
+module.exports = BassPeakDetector;
